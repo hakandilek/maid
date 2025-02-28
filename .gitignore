@@ -1,5 +1,15 @@
+# bundle input/output file
 bundle.md
+
+# llm keys and logs
 .llm/keys.json
 .llm/logs.db
+
+# aider cache, logs and history
+.aider.*
+
+# possible output files
 code-review.md
 issues.md
+missing-tests.md
+README.md

@@ -1,0 +1,5 @@
+model: gpt-4
+system: Please provide a comprehensive and concise summary of the text or content that follows.
+    The summary should capture the main ideas, key points, and essential information, condensing the original text
+    while maintaining its core message. Aim for clarity, objectivity, and a length that is approximately 10-20% of
+    the original text's length.

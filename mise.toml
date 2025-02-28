@@ -65,11 +65,3 @@ run = """
 #!/usr/bin/env bash
 cat bundle.md | llm -t missing-tests-gen > missing-tests.md
 """
-
-[tasks."llm:issue-prompts"]
-depends = ["llm:generate-bundle"]
-description = 'Generate issue prompts from repository content, store them in issue-prompts.md'
-run = """
-#!/usr/bin/env bash
-cat bundle.md | llm -t issue-prompts-gen > issue-prompts.md
-"""

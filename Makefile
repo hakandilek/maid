@@ -22,7 +22,7 @@ help: Makefile
 	@echo "LLM Tasks:"
 	@echo
 	@if which mise > /dev/null; then \
-		mise tasks | awk 'NR==0 {next} {sub(/^llm:/, "", $$1); printf "llm %-10s %s\n", $$1, substr($$0, index($$0,$$2))}' | sed -e 's/^/ /'; \
+		mise tasks | awk 'NR==0 {next} {sub(/^llm:/, "", $$1); printf "llm %-15s %s\n", $$1, substr($$0, index($$0,$$2))}' | sed -e 's/^/ /'; \
 	else \
 		echo "mise is not installed. Run 'make setup' to install dependencies and get the full list of LLM tasks."; \
 	fi
