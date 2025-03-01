@@ -13,9 +13,9 @@ ARGS = $(filter-out $@,$(MAKECMDGOALS))
 ## help: Show this help message
 help: Makefile
 	@echo
-	@echo "LAIDS Local AI Development Setup"
+	@echo "MAID My AI Development Tools"
 	@echo
-	@echo "Choose a command run in the Makefile:"
+	@echo "Choose a command run:"
 	@echo
 	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
 	@echo
