@@ -12,9 +12,12 @@ ARGS = $(filter-out $@,$(MAKECMDGOALS))
 ## help: Show this help message
 help: Makefile
 	@echo
-	@echo "MAID My AI Development Tools"
+	@echo "\033[0;33mM\033[0;37mAID\033[0;33m AI D\033[0;37mevelopment toolset\033[0m"
 	@echo
-	@echo "Choose a command run:"
+	@echo "Usage:"
+	@echo "  maid <command>"
+	@echo
+	@echo "Available commands:"
 	@echo
 	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
 	@echo
