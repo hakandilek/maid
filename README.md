@@ -31,10 +31,15 @@ You can use the following commands to interact with MAID:
 - `maid code-review`: Generate detailed code review feedback
 - `maid missing-tasks`: Identify potential missing tests for code in the repository
 
-## Technical Stack
+## Ignoring Files and Directories
 
-- [Repomix](https://repomix.com/): An analysis tool for reviewing and processing code repositories
-- [LLM](https://llm.datasette.io/en/stable/): LLM CLI utility for interacting with the Large Language Models
+You can use the `MAID_IGNORE` environment variable to specify files and directories that should be ignored by `maid` commands. This can be useful to exclude certain files or directories from being processed that are not relevant to the analysis in order to reduce LLM token usage and improve performance.
+
+Set the `MAID_IGNORE` variable to a comma-separated list of file and directory paths that you want to ignore before calling any `maid` commands. For example:
+
+```sh
+MAID_IGNORE="**/tests/**" maid readme
+```
 
 ## Setting up the default model
 
@@ -47,6 +52,11 @@ TODO: Add instructions on how to set up extra OpenAI compatible models for the L
 ## Setting up OpenAPI secret keys
 
 TODO: Add instructions on how to set up OpenAPI secret keys for the LLM CLI utility.
+
+## Technical Stack
+
+- [Repomix](https://repomix.com/): An analysis tool for reviewing and processing code repositories
+- [LLM](https://llm.datasette.io/en/stable/): LLM CLI utility for interacting with the Large Language Models
 
 ## Contribution Guidelines (Optional)
 

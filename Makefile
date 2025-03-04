@@ -47,11 +47,15 @@ setup:
 
 # generate-bundle: Generate bundle.md
 generate-bundle:
+	@MAID_IGNORE_LIST="**/uv.lock,**/package-lock.json,**/.env,**/Cargo.lock,**/node_modules,**/target,**/dist,**/build,**/bundle.md,**/yarn.lock"; \
+	if [ -n "$${MAID_IGNORE}" ]; then \
+		MAID_IGNORE_LIST="$${MAID_IGNORE_LIST},$${MAID_IGNORE}"; \
+	fi; \
 	repomix \
 		--style markdown \
 		--output-show-line-numbers \
 		--output bundle.md \
-		--ignore **/uv.lock,**/package-lock.json,**/.env,**/Cargo.lock,**/node_modules,**/target,**/dist,**/build,**/bundle.md,**/yarn.lock
+		--ignore "$${MAID_IGNORE_LIST}"
 
 
 ## clean: Clean up generated files.
