@@ -69,6 +69,6 @@ To contribute to the project, merge requests are welcome for new features, bug f
 
 ## License
 
-The My AI Development Tools (MAID) project is licensed under the [MIT License](https://github.com/yourusername/your-repo/blob/master/LICENSE).
+The My AI Development Tools (MAID) project is licensed under the [MIT License](https://github.com/hakandilek/maid/blob/master/LICENSE).
 
 Contribute to the development of a smarter, more efficient workflow with MAID AI Development toolset 🚀✨
