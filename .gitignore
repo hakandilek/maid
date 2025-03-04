@@ -6,7 +6,7 @@ bundle.md
 .llm/logs.db
 
 # aider cache, logs and history
-.aider.*
+.aider*
 
 # possible output files
 code-review.md

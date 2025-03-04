@@ -1,8 +1,7 @@
 .DEFAULT_TARGET: help
-.PHONY: help setup llm
+.PHONY: help setup llm generate-bundle clean-bundle readme bundle issues code-review missing-tasks
 
-
-LLM_USER_PATH = $(PWD)/.llm
+export LLM_USER_PATH := $(PWD)/.llm
 
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 %:
@@ -19,23 +18,15 @@ help: Makefile
 	@echo
 	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
 	@echo
-	@echo "LLM Tasks:"
-	@echo
-	@if which mise > /dev/null; then \
-		mise tasks | awk 'NR==0 {next} {sub(/^llm:/, "", $$1); printf "llm %-15s %s\n", $$1, substr($$0, index($$0,$$2))}' | sed -e 's/^/ /'; \
-	else \
-		echo "mise is not installed. Run 'make setup' to install dependencies and get the full list of LLM tasks."; \
-	fi
-	@echo
 
 
 
 ## setup: Setup the local environment, install dependencies
 setup:
-	# check if homebrew is installed, install if not print out an error message and fail
+	@# check if homebrew is installed, install if not print out an error message and fail
 	@which brew > /dev/null && echo "✔ homebrew is already installed" || { echo "homebrew is not installed, please install it from https://brew.sh"; exit 1; }
 
-	@tools="repomix aider mise llm"; \
+	@tools="repomix aider llm"; \
 	for tool in $$tools; do \
 		if which $$tool > /dev/null; then \
 			echo "✔ $$tool is already installed"; \
@@ -44,13 +35,43 @@ setup:
 		fi; \
 	done
 
-	# upgrade/update mise tools
-	@mise up
 
 
+# generate-bundle: Generate bundle.md
+generate-bundle:
+	repomix \
+		--style markdown \
+		--output-show-line-numbers \
+		--output bundle.md \
+		--ignore **/uv.lock,**/package-lock.json,**/.env,**/Cargo.lock,**/node_modules,**/target,**/dist,**/build,**/bundle.md,**/yarn.lock
 
-## llm <task name>: Run an llm task
-llm:
-	mise run 'llm:$(ARGS)'
+
+## clean: Clean up generated files.
+clean:
+	find . -name "bundle.md" -print -delete
 
 
+## readme: Generate README.md from repository content
+readme: generate-bundle
+	cat bundle.md | llm -t readme-gen > README.md
+
+
+## bundle: Bundle the repository into the file bundle.md and copy it`s content to the system clipboard
+bundle: generate-bundle
+	cat bundle.md | pbcopy
+	echo "Pushed bundle.md to the copy buffer"
+
+
+## issues: Generate GitHub/Gitlab issues from repository content, store them in issues.md
+issues: generate-bundle
+	cat bundle.md | llm -t issue-gen > issues.md
+
+
+## code-review: Generate code review output from repository content, store it in code-review.md
+code-review: generate-bundle
+	cat bundle.md | llm -t code-review-gen > code-review.md
+
+
+## missing-tasks: Generate missing tests for code in repository, store them in missing-tasks.md
+missing-tasks: generate-bundle
+	cat bundle.md | llm -t missing-tasks-gen > missing-tasks.md
