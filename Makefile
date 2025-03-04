@@ -1,7 +1,9 @@
 .DEFAULT_TARGET: help
 .PHONY: help setup llm generate-bundle clean-bundle readme bundle issues code-review missing-tasks
 
-export LLM_USER_PATH := $(PWD)/.llm
+MAKEFILE_PATH :=  $(realpath $(lastword $(MAKEFILE_LIST)))
+MAID_PATH := $(dir $(MAKEFILE_PATH))
+LLM_USER_PATH := $(MAID_PATH).llm
 
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 %:
@@ -19,7 +21,10 @@ help: Makefile
 	@echo
 	@echo "Available commands:"
 	@echo
-	@sed -n 's/^##//p' $< | column -t -s ':' |  sed -e 's/^/ /'
+	 @# Extract lines starting with '##', replace ':' with tab, and add leading space
+	@sed -n 's/^##//p' $(MAKEFILE_PATH) \
+	|	column -t -s ':' \
+	|	sed -e 's/^/ /'
 	@echo
 
 
