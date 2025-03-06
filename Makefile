@@ -4,11 +4,11 @@
 	readme
 	issues
 	code-review
-	missing-tasks
+	missing-tests
 
 MAKEFILE_PATH :=  $(realpath $(lastword $(MAKEFILE_LIST)))
 MAID_PATH := $(dir $(MAKEFILE_PATH))
-LLM_USER_PATH := $(MAID_PATH).llm
+export LLM_USER_PATH := $(MAID_PATH).llm
 
 ARGS = $(filter-out $@,$(MAKECMDGOALS))
 %:
@@ -125,6 +125,6 @@ code-review: generate-bundle
 	cat bundle.md | llm -t code-review-gen > code-review.md
 
 
-## missing-tasks: Generate missing tests for code in repository, store them in missing-tasks.md
-missing-tasks: generate-bundle
-	cat bundle.md | llm -t missing-tasks-gen > missing-tasks.md
+## missing-tests: Generate missing tests for code in repository, store them in missing-tests.md
+missing-tests: generate-bundle
+	cat bundle.md | llm --log -t missing-tests-gen > missing-tests.md
