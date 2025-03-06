@@ -101,7 +101,11 @@ generate-bundle:
 
 ## clean: Clean up generated files.
 clean:
-	find . -name "bundle.md" -print -delete
+	@echo "Cleaning up generated files..."
+	@find . -name "bundle.md" -print -delete
+	@find . -name "missing-tests.md" -print -delete
+	@find . -name "issues.md" -print -delete
+	@find . -name "code-review.md" -print -delete
 
 
 ## readme: Generate README.md from repository content
