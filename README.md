@@ -16,7 +16,25 @@ The toolset is heavily influenced by the [blog entry and setup by Harper Reed](h
 ### Installation
 
 - Clone this repository to your local machine and
-- add it to your `PATH` environment variable.
+- Add it to your `PATH` environment variable.
+- Run the `maid setup` command to install the necessary
+  dependencies and set up the local environment.
+
+## Configuration
+
+Ypu may need to configure the LLM models and endpoints in order to start using the MAID toolset. If not provided bt the `maid setup` command above, you can set up the configuration by creating or configuring the following files:
+
+- `.llm/default_model.txt`: This plain text file should contain the name of the default model to use for the LLM CLI utility.
+- `.llm/extra-openai-models.yaml`: List of OpenAI compatible models available. File format is described in the [LLM documentation](https://llm.datasette.io/en/stable/other-models.html#openai-compatible-models).
+- `.llm/keys.json`: OpenAI secret keys for the LLM CLI utility as described in the [LLM documentation](https://llm.datasette.io/en/stable/setup.html#api-keys). File format shoul follow the following JSON structure:
+
+    ```json
+    {
+    "SOME_API_KEY": "..."
+    }
+    ```
+
+    where `SOME_API_KEY` shall match the `api_key_name` in the `extra-openai-models.yaml` file.
 
 ## Commands
 
@@ -40,18 +58,6 @@ Set the `MAID_IGNORE` variable to a comma-separated list of file and directory p
 ```sh
 MAID_IGNORE="**/tests/**" maid readme
 ```
-
-## Setting up the default model
-
-TODO: Add instructions on how to set up the default model for the LLM CLI utility.
-
-## Setting up extra OpenAI compatible models
-
-TODO: Add instructions on how to set up extra OpenAI compatible models for the LLM CLI utility.
-
-## Setting up OpenAPI secret keys
-
-TODO: Add instructions on how to set up OpenAPI secret keys for the LLM CLI utility.
 
 ## Technical Stack
 

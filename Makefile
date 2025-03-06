@@ -1,5 +1,10 @@
 .DEFAULT_TARGET: help
-.PHONY: help setup llm generate-bundle clean-bundle readme bundle issues code-review missing-tasks
+.PHONY: help setup setup-homebrew setup-tools setup-config
+	generate-bundle clean-bundle bundle
+	readme
+	issues
+	code-review
+	missing-tasks
 
 MAKEFILE_PATH :=  $(realpath $(lastword $(MAKEFILE_LIST)))
 MAID_PATH := $(dir $(MAKEFILE_PATH))
@@ -30,18 +35,54 @@ help: Makefile
 
 
 ## setup: Setup the local environment, install dependencies
-setup:
+setup: setup-homebrew setup-tools setup-config setup-keys
+
+setup-homebrew:
 	@# check if homebrew is installed, install if not print out an error message and fail
 	@which brew > /dev/null && echo "✔ homebrew is already installed" || { echo "homebrew is not installed, please install it from https://brew.sh"; exit 1; }
 
-	@tools="repomix aider llm"; \
+setup-tools:
+	@# check if the necessary tools are installed, install if not
+	@tools="git repomix llm"; \
+	error_flag=0; \
 	for tool in $$tools; do \
 		if which $$tool > /dev/null; then \
 			echo "✔ $$tool is already installed"; \
 		else \
-			brew install $$tool; \
+			brew install $$tool || error_flag=1; \
 		fi; \
-	done
+	done; \
+	if [ $$error_flag -eq 1 ]; then \
+		echo "⚠ Some tools failed to install. Please check your Homebrew setup."; \
+		exit 1; \
+	fi
+
+setup-config:
+	@# Prompt the user for the configuration repository URL
+	@read -p "Enter the configuration repository URL (or leave empty to skip): " config_repo; \
+	if [ -n "$$config_repo" ]; then \
+		error_flag=0; \
+		temp_dir=$$(mktemp -d) || error_flag=1; \
+		git clone $$config_repo $$temp_dir || error_flag=1; \
+		mkdir -p $(LLM_USER_PATH) || error_flag=1; \
+		if [ -f $(LLM_USER_PATH)/keys.json ]; then \
+			echo "✔ $(LLM_USER_PATH)/keys.json already exists. It will not be overwritten."; \
+			rm -f $$temp_dir/.llm/keys.json || error_flag=1; \
+		else \
+			cp $$temp_dir/.llm/keys.json $(LLM_USER_PATH) || error_flag=1; \
+			echo "⚠ $(LLM_USER_PATH)/keys.json has been set up. Please configure it as defined in the README.md."; \
+		fi; \
+		cp $$temp_dir/.llm/* $(LLM_USER_PATH) || error_flag=1; \
+		rm -rf $$temp_dir || error_flag=1; \
+		if [ $$error_flag -eq 1 ]; then \
+			echo "⚠ Failed to set up configuration files. Please check the repository URL and your setup."; \
+			exit 1; \
+		else \
+			echo "✔ Configuration files have been set up"; \
+		fi; \
+	else \
+		echo "⚠ No configuration repository URL provided. Skipping configuration file setup."; \
+	fi
 
 
 

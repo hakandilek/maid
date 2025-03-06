@@ -5,6 +5,10 @@ bundle.md
 .llm/keys.json
 .llm/logs.db
 
+# llm configuration files
+.llm/default_model.txt
+.llm/extra-openai-models.yaml
+
 # aider cache, logs and history
 .aider*
 
